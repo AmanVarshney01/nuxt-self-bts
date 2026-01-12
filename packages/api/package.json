@@ -1,0 +1,29 @@
+{
+  "name": "@my-better-t-app-3/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@my-better-t-app-3/auth": "workspace:*",
+    "@my-better-t-app-3/db": "workspace:*",
+    "@my-better-t-app-3/env": "workspace:*",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@my-better-t-app-3/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
