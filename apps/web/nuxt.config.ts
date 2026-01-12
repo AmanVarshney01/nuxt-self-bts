@@ -1,4 +1,4 @@
-import "@my-better-t-app-3/env/web";
+// Environment is validated at runtime in server routes
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -10,9 +10,5 @@ export default defineNuxtConfig({
     port: 3001,
   },
   ssr: true,
-  runtimeConfig: {
-    public: {
-      serverUrl: process.env.NUXT_PUBLIC_SERVER_URL,
-    },
-  },
 });
+
