@@ -32,23 +32,12 @@ const healthCheck = useQuery($orpc.healthCheck.queryOptions())
         </template>
 
         <div class="flex items-center gap-2">
-          <UIcon
-            :name="healthCheck.isLoading.value ? 'i-lucide-loader-2' : healthCheck.isSuccess.value ? 'i-lucide-check-circle' : 'i-lucide-x-circle'"
-            :class="[
-              healthCheck.isLoading.value ? 'animate-spin text-muted' : '',
-              healthCheck.isSuccess.value ? 'text-success' : '',
-              healthCheck.isError.value ? 'text-error' : ''
-            ]"
-          />
+          <span
+            class="w-2 h-2 rounded-full"
+            :class="healthCheck.isSuccess.value ? 'bg-green-500' : healthCheck.isError.value ? 'bg-red-500' : 'bg-yellow-500'"
+          ></span>
           <span class="text-sm">
-            <template v-if="healthCheck.isLoading.value"> Checking... </template>
-            <template v-else-if="healthCheck.isSuccess.value">
-              Connected ({{ healthCheck.data.value }})
-            </template>
-            <template v-else-if="healthCheck.isError.value">
-              Error: {{ healthCheck.error.value?.message || 'Failed to connect' }}
-            </template>
-            <template v-else> Idle </template>
+            {{ healthCheck.isSuccess.value ? 'Connected' : healthCheck.isError.value ? 'Error' : 'Connecting...' }}
           </span>
         </div>
       </UCard>

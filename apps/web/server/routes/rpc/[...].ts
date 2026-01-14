@@ -1,5 +1,6 @@
 import { RPCHandler } from "@orpc/server/fetch";
 import { onError } from "@orpc/server";
+import { BatchHandlerPlugin } from "@orpc/server/plugins";
 import { appRouter } from "@my-better-t-app-3/api/routers/index";
 import { createContext } from "@my-better-t-app-3/api/context";
 
@@ -9,6 +10,7 @@ const handler = new RPCHandler(appRouter, {
       console.error(error);
     }),
   ],
+  plugins: [new BatchHandlerPlugin()],
 });
 
 export default defineEventHandler(async (event) => {

@@ -27,6 +27,7 @@
     "@orpc/tanstack-query": "^1.12.2",
     "@orpc/zod": "catalog:",
     "@tanstack/vue-query": "^5.90.2",
+    "@vue/devtools-api": "^8.0.5",
     "ai": "catalog:",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
