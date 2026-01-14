@@ -12,7 +12,7 @@ const input = ref('')
 const chat = new Chat({
   messages,
   transport: new DefaultChatTransport({
-    api: `${config.public.serverUrl}/ai`,
+    api: `/api/ai`,
   }),
   onError(error) {
     console.error('Chat error:', error)
