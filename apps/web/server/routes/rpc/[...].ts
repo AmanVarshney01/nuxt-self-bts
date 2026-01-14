@@ -1,10 +1,13 @@
 import { RPCHandler } from "@orpc/server/fetch";
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { BatchHandlerPlugin } from "@orpc/server/plugins";
+import { ZodToJsonSchemaConverter } from "@orpc/zod";
 import { appRouter } from "@my-better-t-app-3/api/routers/index";
 import { createContext } from "@my-better-t-app-3/api/context";
 
-const handler = new RPCHandler(appRouter, {
+const rpcHandler = new RPCHandler(appRouter, {
   interceptors: [
     onError((error) => {
       console.error(error);
@@ -13,17 +16,35 @@ const handler = new RPCHandler(appRouter, {
   plugins: [new BatchHandlerPlugin()],
 });
 
+const apiHandler = new OpenAPIHandler(appRouter, {
+  plugins: [
+    new OpenAPIReferencePlugin({
+      schemaConverters: [new ZodToJsonSchemaConverter()],
+    }),
+  ],
+  interceptors: [
+    onError((error) => {
+      console.error(error);
+    }),
+  ],
+});
+
 export default defineEventHandler(async (event) => {
   const request = toWebRequest(event);
+  const context = await createContext({ headers: request.headers });
 
-  const { response } = await handler.handle(request, {
+  const rpcResult = await rpcHandler.handle(request, {
     prefix: "/rpc",
-    context: await createContext({ headers: request.headers }),
+    context,
   });
+  if (rpcResult.response) return rpcResult.response;
 
-  if (response) return response;
+  const apiResult = await apiHandler.handle(request, {
+    prefix: "/rpc/api-reference",
+    context,
+  });
+  if (apiResult.response) return apiResult.response;
 
   setResponseStatus(event, 404, "Not Found");
   return "Not found";
 });
-
